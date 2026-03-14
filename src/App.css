@@ -1,0 +1,377 @@
+.app-shell {
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.topbar {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 18px;
+  background: linear-gradient(130deg, #fffdf7, #f3f8ff);
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.route-nav {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.route-pill {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: 600 14px/1 var(--font-ui);
+}
+
+.route-pill[data-active='true'] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.route-canvas {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.panel {
+  padding: 22px;
+  display: grid;
+  gap: 20px;
+}
+
+.copy-block {
+  display: grid;
+  gap: 8px;
+}
+
+.copy-block h2,
+.copy-block p {
+  margin: 0;
+}
+
+.copy-block p {
+  color: var(--muted);
+}
+
+.route-tag {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.simple-layout {
+  display: grid;
+  gap: 12px;
+}
+
+.scene-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.scene-chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.scene-chip[data-active='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.scene-card {
+  display: grid;
+  grid-template-columns: minmax(200px, 320px) 1fr;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.scene-card[data-expanded='true'] {
+  grid-template-columns: 1fr;
+}
+
+.scene-visual {
+  min-height: 210px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.scene-visual img {
+  width: 64%;
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.22));
+}
+
+.scene-copy h3,
+.scene-copy p {
+  margin: 0;
+}
+
+.scene-copy {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.action {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 13px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font: 600 14px/1 var(--font-ui);
+  justify-self: start;
+}
+
+.action.ghost {
+  background: var(--ink);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.event-log {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.board {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.column {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fcfdff;
+}
+
+.column h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+.column ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.task-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  background: #fff;
+}
+
+.task-card h4,
+.task-card p {
+  margin: 0;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mini {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 7px 9px;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.board[data-compact='true'] .task-card {
+  padding: 8px;
+  gap: 6px;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: minmax(190px, 240px) 1fr minmax(220px, 280px);
+  gap: 12px;
+}
+
+.mission-list,
+.mission-core,
+.diagnostics {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+}
+
+.mission-list {
+  display: grid;
+  gap: 8px;
+}
+
+.mission-button {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.mission-button[data-active='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.mission-core h3,
+.mission-core p {
+  margin: 0;
+}
+
+.mission-core {
+  display: grid;
+  gap: 10px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(31, 111, 235, 0.08), transparent 45%),
+    #fff;
+}
+
+.stage {
+  font-weight: 600;
+}
+
+.stage[data-stage='syncing'] {
+  color: #b45309;
+}
+
+.stage[data-stage='resolved'] {
+  color: #0f766e;
+}
+
+.diagnostics p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.diagnostics ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+}
+
+::view-transition-group(*.vt-route-canvas) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+::view-transition-group(*.vt-scene-hero),
+::view-transition-group(*.vt-scene-title) {
+  animation-duration: 430ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-group(*.vt-task-share),
+::view-transition-group(*.vt-core-share) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-group(*.vt-core-seed) {
+  animation-duration: 280ms;
+}
+
+::view-transition-group(*.vt-core-resolve) {
+  animation-duration: 560ms;
+}
+
+::view-transition-group(*.vt-diag-enter) {
+  animation-duration: 300ms;
+}
+
+::view-transition-group(*.vt-diag-exit) {
+  animation-duration: 220ms;
+}
+
+:active-view-transition-type(route-forward) ::view-transition-group(*.vt-route-canvas) {
+  animation-duration: 340ms;
+}
+
+:active-view-transition-type(route-backward) ::view-transition-group(*.vt-route-canvas) {
+  animation-duration: 240ms;
+}
+
+:active-view-transition-type(kanban-move) ::view-transition-group(*.vt-task-move) {
+  animation-duration: 420ms;
+}
+
+:active-view-transition-type(scene-expand) ::view-transition-group(*.vt-scene-expand) {
+  animation-duration: 500ms;
+}
+
+@media (max-width: 980px) {
+  .app-shell {
+    padding: 14px;
+  }
+
+  .topbar {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .scene-card,
+  .board,
+  .mission-grid {
+    grid-template-columns: 1fr;
+  }
+}

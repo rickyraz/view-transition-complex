@@ -1,0 +1,60 @@
+:root {
+  --bg: #f6f7f2;
+  --ink: #1d2430;
+  --muted: #596173;
+  --line: #d8dfe8;
+  --accent: #1f6feb;
+  --font-ui: 'Sora', 'Avenir Next', 'Segoe UI', sans-serif;
+  --font-body: 'IBM Plex Sans', 'Avenir Next', 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font: 16px/1.5 var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 10%, #f7fbff, transparent 45%),
+    radial-gradient(circle at 100% 0%, #fff6eb, transparent 35%),
+    var(--bg);
+}
+
+#root {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 16px 0 32px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-ui);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+h1 {
+  margin: 6px 0 0;
+  font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.5rem);
+}
+
+button,
+code {
+  font-family: var(--font-ui);
+}
+
+code {
+  background: #f0f3f8;
+  border: 1px solid #dde4ef;
+  border-radius: 6px;
+  padding: 1px 6px;
+}
