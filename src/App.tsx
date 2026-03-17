@@ -9,9 +9,9 @@ import {
 import heroImg from './assets/hero.png'
 import './App.css'
 
-type RoutePath = '/simple' | '/medium' | '/complex'
+type RoutePath = '/simple' | '/medium' | '/complex' | '/edge'
 
-const routeOrder: RoutePath[] = ['/simple', '/medium', '/complex']
+const routeOrder: RoutePath[] = ['/simple', '/medium', '/complex', '/edge']
 
 const routeMeta: Record<RoutePath, { label: string; subtitle: string }> = {
   '/simple': {
@@ -26,10 +26,14 @@ const routeMeta: Record<RoutePath, { label: string; subtitle: string }> = {
     label: 'Complex',
     subtitle: 'Multi-region mission control with async stages',
   },
+  '/edge': {
+    label: 'Edge',
+    subtitle: 'Queue triage with shared detail and urgency pivots',
+  },
 }
 
 function normalizePath(pathname: string): RoutePath {
-  if (pathname === '/simple' || pathname === '/medium' || pathname === '/complex') {
+  if (pathname === '/simple' || pathname === '/medium' || pathname === '/complex' || pathname === '/edge') {
     return pathname
   }
 
@@ -78,7 +82,15 @@ function App() {
   }
 
   const activeRoute =
-    path === '/simple' ? <SimpleRoute /> : path === '/medium' ? <MediumRoute /> : <ComplexRoute />
+    path === '/simple' ? (
+      <SimpleRoute />
+    ) : path === '/medium' ? (
+      <MediumRoute />
+    ) : path === '/complex' ? (
+      <ComplexRoute />
+    ) : (
+      <EdgeRoute />
+    )
 
   return (
     <div className="app-shell">
@@ -484,6 +496,189 @@ function ComplexRoute() {
             </section>
           </ViewTransition>
         )}
+      </div>
+    </section>
+  )
+}
+
+type AlertItem = {
+  id: string
+  title: string
+  owner: string
+  severity: 'low' | 'medium' | 'high'
+  queue: 'incoming' | 'investigating' | 'resolved'
+  notes: string
+}
+
+const alertSeed: AlertItem[] = [
+  {
+    id: 'a-11',
+    title: 'Latency burst on shard-11',
+    owner: 'Ira',
+    severity: 'high',
+    queue: 'incoming',
+    notes: 'Spike appears right after deploy; rollback candidate pending.',
+  },
+  {
+    id: 'a-26',
+    title: 'Auth refresh mismatch',
+    owner: 'Mona',
+    severity: 'medium',
+    queue: 'investigating',
+    notes: 'Token clock skew reproduces only on mobile web sessions.',
+  },
+  {
+    id: 'a-31',
+    title: 'Stale CDN profile image',
+    owner: 'Rey',
+    severity: 'low',
+    queue: 'resolved',
+    notes: 'Cache invalidation complete; monitor for late edge regions.',
+  },
+  {
+    id: 'a-44',
+    title: 'Checkout tax locale fallback',
+    owner: 'Tia',
+    severity: 'high',
+    queue: 'incoming',
+    notes: 'VAT precision differs from backend serializer for one locale.',
+  },
+]
+
+function EdgeRoute() {
+  const [alerts, setAlerts] = useState<AlertItem[]>(alertSeed)
+  const [selectedId, setSelectedId] = useState(alertSeed[0].id)
+  const [highlightHighOnly, setHighlightHighOnly] = useState(false)
+
+  const selectedAlert = useMemo(
+    () => alerts.find((alert) => alert.id === selectedId) ?? alerts[0],
+    [alerts, selectedId],
+  )
+
+  return (
+    <section className="panel">
+      <div className="copy-block">
+        <p className="route-tag">Limit Push 4</p>
+        <h2>Queue triage with route-local share transitions</h2>
+        <p>
+          This case simulates alert triage: selecting cards shares title chips into a details panel,
+          while urgency filter and queue moves use independent typed updates.
+        </p>
+      </div>
+
+      <div className="toolbar">
+        <button
+          type="button"
+          className="action"
+          onClick={() => withTransitionType('edge-filter', () => setHighlightHighOnly((x) => !x))}
+        >
+          {highlightHighOnly ? 'Show all severities' : 'Highlight high severity only'}
+        </button>
+      </div>
+
+      <div className="edge-layout" data-filtered={highlightHighOnly}>
+        <aside className="edge-list" aria-label="Alert queue">
+          {alerts.map((alert) => (
+            <ViewTransition key={alert.id} name={`edge-alert-${alert.id}`} default="vt-edge-card">
+              <button
+                type="button"
+                className="edge-card"
+                data-active={alert.id === selectedAlert.id}
+                data-severity={alert.severity}
+                onClick={() =>
+                  withTransitionType('edge-focus', () => {
+                    setSelectedId(alert.id)
+                  })
+                }
+              >
+                <ViewTransition name={`edge-title-${alert.id}`} default="vt-edge-title" share="vt-edge-share">
+                  <h3>{alert.title}</h3>
+                </ViewTransition>
+                <p>
+                  {alert.owner} · {alert.queue}
+                </p>
+              </button>
+            </ViewTransition>
+          ))}
+        </aside>
+
+        <ViewTransition
+          name="edge-detail"
+          default={{
+            default: 'vt-edge-detail',
+            'edge-queue': 'vt-edge-queue-update',
+            'edge-severity': 'vt-edge-severity-update',
+            'edge-focus': 'vt-edge-focus-detail',
+          }}
+        >
+          <article className="edge-detail" data-severity={selectedAlert.severity}>
+            <ViewTransition name={`edge-title-${selectedAlert.id}`} default="vt-edge-title" share="vt-edge-share">
+              <h3>{selectedAlert.title}</h3>
+            </ViewTransition>
+            <ViewTransition
+              name={`edge-severity-${selectedAlert.id}`}
+              default={{ default: 'none', 'edge-severity': 'vt-edge-severity-pill' }}
+            >
+              <p className="edge-severity-label">Severity: {selectedAlert.severity}</p>
+            </ViewTransition>
+            <p>
+              Owner: <strong>{selectedAlert.owner}</strong>
+            </p>
+            <p>{selectedAlert.notes}</p>
+            <div className="task-actions">
+              <button
+                type="button"
+                className="mini"
+                onClick={() =>
+                  withTransitionType('edge-queue', () => {
+                    setAlerts((prev) =>
+                      prev.map((item) =>
+                        item.id === selectedAlert.id
+                          ? {
+                              ...item,
+                              queue:
+                                item.queue === 'incoming'
+                                  ? 'investigating'
+                                  : item.queue === 'investigating'
+                                    ? 'resolved'
+                                    : 'incoming',
+                            }
+                          : item,
+                      ),
+                    )
+                  })
+                }
+              >
+                Cycle queue
+              </button>
+              <button
+                type="button"
+                className="mini"
+                onClick={() =>
+                  withTransitionType('edge-severity', () => {
+                    setAlerts((prev) =>
+                      prev.map((item) =>
+                        item.id === selectedAlert.id
+                          ? {
+                              ...item,
+                              severity:
+                                item.severity === 'low'
+                                  ? 'medium'
+                                  : item.severity === 'medium'
+                                    ? 'high'
+                                    : 'low',
+                            }
+                          : item,
+                      ),
+                    )
+                  })
+                }
+              >
+                Rotate severity
+              </button>
+            </div>
+          </article>
+        </ViewTransition>
       </div>
     </section>
   )

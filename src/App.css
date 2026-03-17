@@ -310,6 +310,117 @@
   color: var(--muted);
 }
 
+.edge-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: 12px;
+}
+
+.edge-list,
+.edge-detail {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+}
+
+.edge-list {
+  display: grid;
+  gap: 8px;
+}
+
+.edge-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+}
+
+.edge-card h3,
+.edge-card p,
+.edge-detail h3,
+.edge-detail p {
+  margin: 0;
+}
+
+.edge-card[data-active='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.edge-card[data-severity='high'] {
+  background: linear-gradient(140deg, #fff, #fff5f5);
+}
+
+.edge-card[data-severity='medium'] {
+  background: linear-gradient(140deg, #fff, #fffbeb);
+}
+
+.edge-card[data-severity='low'] {
+  background: linear-gradient(140deg, #fff, #f0fdf4);
+}
+
+.edge-layout[data-filtered='true'] .edge-card[data-severity='low'],
+.edge-layout[data-filtered='true'] .edge-card[data-severity='medium'] {
+  opacity: 0.45;
+}
+
+.edge-detail {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.edge-severity-label {
+  display: inline-flex;
+  justify-self: start;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.edge-detail[data-severity='high'] {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(239, 68, 68, 0.12), transparent 45%),
+    #fff;
+}
+
+.edge-detail[data-severity='high'] .edge-severity-label {
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.edge-detail[data-severity='medium'] {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.12), transparent 45%),
+    #fff;
+}
+
+.edge-detail[data-severity='medium'] .edge-severity-label {
+  border-color: #fde68a;
+  color: #b45309;
+}
+
+.edge-detail[data-severity='low'] {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(34, 197, 94, 0.12), transparent 45%),
+    #fff;
+}
+
+.edge-detail[data-severity='low'] .edge-severity-label {
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
 ::view-transition-group(*.vt-route-canvas) {
   animation-duration: 320ms;
   animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -343,6 +454,30 @@
   animation-duration: 220ms;
 }
 
+::view-transition-group(*.vt-edge-share) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-group(*.vt-edge-queue-update) {
+  animation-duration: 360ms;
+}
+
+::view-transition-group(*.vt-edge-focus-detail) {
+  animation-duration: 360ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-group(*.vt-edge-severity-update) {
+  animation-duration: 300ms;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-group(*.vt-edge-severity-pill) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 :active-view-transition-type(route-forward) ::view-transition-group(*.vt-route-canvas) {
   animation-duration: 340ms;
 }
@@ -359,6 +494,89 @@
   animation-duration: 500ms;
 }
 
+:active-view-transition-type(edge-filter) ::view-transition-group(*.vt-edge-card) {
+  animation-duration: 260ms;
+}
+
+:active-view-transition-type(edge-queue) ::view-transition-group(*.vt-edge-queue-update) {
+  animation-duration: 430ms;
+}
+
+:active-view-transition-type(edge-focus) ::view-transition-group(*.vt-edge-share) {
+  animation-duration: 520ms;
+}
+
+:active-view-transition-type(edge-focus) ::view-transition-group(*.vt-edge-focus-detail) {
+  animation-duration: 420ms;
+}
+
+:active-view-transition-type(edge-severity) ::view-transition-group(*.vt-edge-severity-update) {
+  animation-duration: 380ms;
+}
+
+:active-view-transition-type(edge-severity) ::view-transition-old(*.vt-edge-severity-update) {
+  animation: edge-severity-old 260ms ease-in both;
+}
+
+:active-view-transition-type(edge-severity) ::view-transition-new(*.vt-edge-severity-update) {
+  animation: edge-severity-new 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+:active-view-transition-type(edge-severity) ::view-transition-old(*.vt-edge-severity-pill) {
+  animation: edge-pill-old 220ms ease-in both;
+}
+
+:active-view-transition-type(edge-severity) ::view-transition-new(*.vt-edge-severity-pill) {
+  animation: edge-pill-new 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes edge-severity-old {
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+    filter: blur(1px);
+  }
+}
+
+@keyframes edge-severity-new {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+    filter: saturate(1.28) brightness(1.08);
+  }
+
+  45% {
+    filter: saturate(1.18) brightness(1.04);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+@keyframes edge-pill-old {
+  to {
+    opacity: 0;
+    transform: translateY(2px) scale(0.9);
+  }
+}
+
+@keyframes edge-pill-new {
+  from {
+    opacity: 0;
+    transform: translateY(-3px) scale(1.1);
+    filter: saturate(1.35);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: none;
+  }
+}
+
 @media (max-width: 980px) {
   .app-shell {
     padding: 14px;
@@ -371,7 +589,8 @@
 
   .scene-card,
   .board,
-  .mission-grid {
+  .mission-grid,
+  .edge-layout {
     grid-template-columns: 1fr;
   }
 }
