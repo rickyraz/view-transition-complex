@@ -1,7 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import {
   ViewTransition,
   addTransitionType,
   startTransition,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -9,7 +12,7 @@ import {
 import heroImg from './assets/hero.png'
 import './App.css'
 
-type RoutePath =
+export type RoutePath =
   | '/simple'
   | '/medium'
   | '/complex'
@@ -20,7 +23,7 @@ type RoutePath =
   | '/fragment-refs'
   | '/concurrent-stores'
 
-const routeOrder: RoutePath[] = [
+export const routeOrder: RoutePath[] = [
   '/simple',
   '/medium',
   '/complex',
@@ -32,7 +35,7 @@ const routeOrder: RoutePath[] = [
   '/concurrent-stores',
 ]
 
-const routeMeta: Record<RoutePath, { label: string; subtitle: string }> = {
+export const routeMeta: Record<RoutePath, { label: string; subtitle: string }> = {
   '/simple': {
     label: 'Simple',
     subtitle: 'Cinematic shared-element playground',
@@ -91,7 +94,7 @@ function normalizePath(pathname: string): RoutePath {
   return '/simple'
 }
 
-function withTransitionType(type: string, update: () => void) {
+export function withTransitionType(type: string, update: () => void) {
   // helper kecil untuk menandai "tipe" transisi aktif
   // tipe ini nanti dipakai selector CSS :active-view-transition-type(...)
   startTransition(() => {
@@ -230,7 +233,7 @@ const scenes: Scene[] = [
   },
 ]
 
-function SimpleRoute() {
+export function SimpleRoute() {
   // state untuk menyimpan scene yang sedang dipilih user
   const [active, setActive] = useState<Scene>(scenes[0])
 
@@ -336,7 +339,7 @@ function nextColumn(column: ColumnId): ColumnId {
   return 'backlog'
 }
 
-function MediumRoute() {
+export function MediumRoute() {
   // daftar task untuk papan kanban
   const [tasks, setTasks] = useState<TaskItem[]>(seedTasks)
 
@@ -485,7 +488,7 @@ const missions = [
   },
 ]
 
-function ComplexRoute() {
+export function ComplexRoute() {
   // mission aktif yang sedang dipilih
   const [activeId, setActiveId] = useState(missions[0].id)
 
@@ -687,7 +690,7 @@ const alertSeed: AlertItem[] = [
   },
 ]
 
-function EdgeRoute() {
+export function EdgeRoute() {
   // list alert di route edge
   const [alerts, setAlerts] = useState<AlertItem[]>(alertSeed)
 
@@ -865,7 +868,7 @@ function createPerfSample(id: number): PerfSample {
   }
 }
 
-function PerformanceTracksRoute() {
+export function PerformanceTracksRoute() {
   const [samples, setSamples] = useState<PerfSample[]>([createPerfSample(1), createPerfSample(2), createPerfSample(3)])
   const [autoStream, setAutoStream] = useState(false)
   const [focus, setFocus] = useState<'render' | 'commit'>('render')
@@ -981,7 +984,7 @@ const compilerIssueSeed: CompilerIssue[] = [
   },
 ]
 
-function CompilerIdeRoute() {
+export function CompilerIdeRoute() {
   const [issues, setIssues] = useState<CompilerIssue[]>(compilerIssueSeed)
   const [activeFile, setActiveFile] = useState(compilerIssueSeed[0].file)
 
@@ -1052,7 +1055,7 @@ function CompilerIdeRoute() {
   )
 }
 
-function AutoEffectDepsRoute() {
+export function AutoEffectDepsRoute() {
   const [query, setQuery] = useState('status:open')
   const [sort, setSort] = useState<'recent' | 'priority'>('recent')
   const [page, setPage] = useState(1)
@@ -1154,7 +1157,7 @@ const fragmentPanels: FragmentPanel[] = [
   },
 ]
 
-function FragmentRefsRoute() {
+export function FragmentRefsRoute() {
   const [activeId, setActiveId] = useState(fragmentPanels[0].id)
   const [measureTick, setMeasureTick] = useState(0)
 
@@ -1204,7 +1207,7 @@ function FragmentRefsRoute() {
 
 type StoreEvent = { id: number; source: 'A' | 'B'; value: number }
 
-function ConcurrentStoresRoute() {
+export function ConcurrentStoresRoute() {
   const [sourceA, setSourceA] = useState(10)
   const [sourceB, setSourceB] = useState(14)
   const [queue, setQueue] = useState<StoreEvent[]>([])
@@ -1221,19 +1224,19 @@ function ConcurrentStoresRoute() {
     })
   }
 
-  const flush = () => {
+  const flush = useCallback(() => {
     if (queue.length === 0) return
     withTransitionType('store-flush', () => {
       setQueue((prev) => prev.slice(1))
       setVersion((x) => x + 1)
     })
-  }
+  }, [queue.length])
 
   useEffect(() => {
     if (!autoFlush) return
     const timer = window.setInterval(flush, 850)
     return () => window.clearInterval(timer)
-  }, [autoFlush, queue])
+  }, [autoFlush, flush])
 
   return (
     <section className="panel">
