@@ -30,6 +30,7 @@
 
 .route-nav {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 6px;
   border-radius: 999px;
@@ -421,6 +422,68 @@
   color: #15803d;
 }
 
+.lab-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.lab-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lab-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.lab-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.lab-card h3,
+.lab-card p {
+  margin: 0;
+}
+
+.lab-card[data-active='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.metric-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.metric-list li[data-fixed='true'] {
+  color: #0f766e;
+}
+
+.pill-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.input-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.input-stack input {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font: 500 14px/1.2 var(--font-ui);
+}
+
 ::view-transition-group(*.vt-route-canvas) {
   animation-duration: 320ms;
   animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -478,6 +541,22 @@
   animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+::view-transition-group(*.vt-lab-board),
+::view-transition-group(*.vt-lab-item) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-group(*.vt-perf-sample),
+::view-transition-group(*.vt-compiler-fix),
+::view-transition-group(*.vt-auto-mode),
+::view-transition-group(*.vt-fragment-measure),
+::view-transition-group(*.vt-store-enqueue),
+::view-transition-group(*.vt-store-flush),
+::view-transition-group(*.vt-perf-focus) {
+  animation-duration: 380ms;
+}
+
 :active-view-transition-type(route-forward) ::view-transition-group(*.vt-route-canvas) {
   animation-duration: 340ms;
 }
@@ -512,6 +591,34 @@
 
 :active-view-transition-type(edge-severity) ::view-transition-group(*.vt-edge-severity-update) {
   animation-duration: 380ms;
+}
+
+:active-view-transition-type(perf-sample) ::view-transition-group(*.vt-perf-sample) {
+  animation-duration: 360ms;
+}
+
+:active-view-transition-type(perf-focus) ::view-transition-group(*.vt-perf-focus) {
+  animation-duration: 420ms;
+}
+
+:active-view-transition-type(compiler-fix) ::view-transition-group(*.vt-compiler-fix) {
+  animation-duration: 420ms;
+}
+
+:active-view-transition-type(auto-mode) ::view-transition-group(*.vt-auto-mode) {
+  animation-duration: 360ms;
+}
+
+:active-view-transition-type(fragment-measure) ::view-transition-group(*.vt-fragment-measure) {
+  animation-duration: 420ms;
+}
+
+:active-view-transition-type(store-enqueue) ::view-transition-group(*.vt-store-enqueue) {
+  animation-duration: 380ms;
+}
+
+:active-view-transition-type(store-flush) ::view-transition-group(*.vt-store-flush) {
+  animation-duration: 440ms;
 }
 
 :active-view-transition-type(edge-severity) ::view-transition-old(*.vt-edge-severity-update) {
@@ -590,7 +697,9 @@
   .scene-card,
   .board,
   .mission-grid,
-  .edge-layout {
+  .edge-layout,
+  .lab-grid.two,
+  .lab-grid.three {
     grid-template-columns: 1fr;
   }
 }
