@@ -1,75 +1,88 @@
-# React + TypeScript + Vite
+# View Transition Complex
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository is a learning playground for modern page transitions in React.
+It demonstrates how to combine:
 
-Currently, two official plugins are available:
+- React Canary `<ViewTransition />` and `addTransitionType`
+- TanStack Router file-based routing with typed route transitions
+- CSS View Transition pseudo-elements for smooth, controllable animations
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The project includes multiple interactive route demos (`/simple`, `/medium`, `/complex`, `/edge`, and additional lab routes) to show real transition patterns and common UX pitfalls.
 
-## React Compiler
+## What this repo demonstrates
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Route-level transitions (forward/backward direction)
+- Intra-route transitions (state updates inside each page)
+- Shared element transitions between related UI regions
+- UI stability fixes for production-like UX:
+  - active tab auto-scroll into view
+  - precise sliding active indicator
+  - reduced layout jumping on long page titles
 
-Note: This will impact Vite dev & build performances.
+## Tech stack
 
-## Expanding the ESLint configuration
+- React Canary + React DOM Canary
+- TypeScript + Vite
+- TanStack Router (`@tanstack/react-router`)
+- TanStack Router file-based plugin + CLI
+- ESLint
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Install dependencies:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Run development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm dev
 ```
+
+Build for production:
+
+```bash
+pnpm build
+```
+
+Lint code:
+
+```bash
+pnpm lint
+```
+
+## File-based routing commands
+
+Generate route tree:
+
+```bash
+pnpm routes:generate
+```
+
+Watch route files and regenerate automatically:
+
+```bash
+pnpm routes:watch
+```
+
+## Project structure
+
+- `src/routes/` - file-based route entries
+- `src/router.tsx` - router setup and defaults
+- `src/routeTree.gen.ts` - generated route tree (do not edit manually)
+- `src/App.tsx` - route demo components and transition logic
+- `src/App.css` - transition styling and layout behavior
+- `docs/` - learning documents for beginner React developers
+
+## Learning docs
+
+- `docs/01_PEMBELAJARAN_REACT_ROUTER.md` - Router architecture and route manipulation
+- `docs/02_PEMBELAJARAN_VIEW_TRANSITION.md` - Smooth transition implementation guide
+- `docs/03_FUNGSI_CORE_VIEW_TRANSITION.md` - Core role of React `<ViewTransition />`
+
+## Notes
+
+- This project is intentionally experimental and education-focused.
+- Some APIs rely on React Canary and modern browser View Transition support.
