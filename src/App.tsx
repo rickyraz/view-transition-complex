@@ -7,6 +7,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import heroImg from './assets/hero.png'
@@ -568,8 +569,12 @@ export function ComplexRoute() {
         <ViewTransition name="mission-nav" default="vt-mission-nav">
           <aside className="mission-list">
             {missions.map((mission) => (
-              <ViewTransition key={mission.id} name={`mission-${mission.id}`} default="vt-mission-item">
-                {/* setiap item mission punya name stabil untuk kemungkinan pairing */}
+              <ViewTransition
+                key={mission.id}
+                name={mission.id === activeId ? `mission-nav-active-${mission.id}` : `mission-${mission.id}`}
+                default="vt-mission-item"
+              >
+                {/* item aktif diberi suffix khusus agar tidak duplicate name dengan panel core */}
                 <button
                   type="button"
                   className="mission-button"
@@ -606,10 +611,7 @@ export function ComplexRoute() {
           }}
         >
           <section className="mission-core">
-            {/*
-              name mission yang sama dipakai di list kiri dan core kanan,
-              jadi bisa membuat efek shared element antar region.
-            */}
+            {/* name di core dipasangkan dari item nav yang baru dipilih (snapshot sebelumnya). */}
             <ViewTransition name={`mission-${activeMission.id}`} default="vt-mission-item" share="vt-core-share">
               <h3>{activeMission.title}</h3>
             </ViewTransition>
@@ -745,11 +747,12 @@ export function EdgeRoute() {
                   })
                 }
               >
-                {/*
-                  judul alert list dan judul detail memakai name sama,
-                  sehingga bisa melakukan shared transition saat fokus item berubah.
-                */}
-                <ViewTransition name={`edge-title-${alert.id}`} default="vt-edge-title" share="vt-edge-share">
+                {/* item aktif di-list diberi name khusus untuk menghindari duplicate dengan detail. */}
+                <ViewTransition
+                  name={alert.id === selectedId ? `edge-title-list-active-${alert.id}` : `edge-title-${alert.id}`}
+                  default="vt-edge-title"
+                  share="vt-edge-share"
+                >
                   <h3>{alert.title}</h3>
                 </ViewTransition>
                 <p>
@@ -1213,12 +1216,16 @@ export function ConcurrentStoresRoute() {
   const [queue, setQueue] = useState<StoreEvent[]>([])
   const [version, setVersion] = useState(1)
   const [autoFlush, setAutoFlush] = useState(false)
+  const nextEventId = useRef(1)
 
   const merged = Math.round((sourceA + sourceB) / 2)
 
   const enqueue = (source: 'A' | 'B') => {
+    const id = nextEventId.current
+    nextEventId.current += 1
+
     withTransitionType('store-enqueue', () => {
-      setQueue((prev) => [...prev, { id: Date.now(), source, value: source === 'A' ? sourceA : sourceB }])
+      setQueue((prev) => [...prev, { id, source, value: source === 'A' ? sourceA : sourceB }])
       if (source === 'A') setSourceA((x) => x + 1)
       if (source === 'B') setSourceB((x) => x + 1)
     })

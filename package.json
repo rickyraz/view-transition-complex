@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "routes:generate": "tsr generate",
     "routes:watch": "tsr watch"
   },
@@ -19,6 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.59.1",
     "@rolldown/plugin-babel": "^0.2.0",
     "@tanstack/router-cli": "^1.166.12",
     "@tanstack/router-plugin": "^1.166.13",
