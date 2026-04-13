@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "react-view-transitions": {
+      "source": "rickyraz/react-view-transitions",
+      "sourceType": "github",
+      "computedHash": "9a892be288957d848547597c02b4c8eae60f8e71f07adc00894342847d6981dc"
+    }
+  }
+}
